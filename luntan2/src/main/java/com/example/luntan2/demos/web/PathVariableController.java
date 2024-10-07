@@ -16,6 +16,7 @@
 
 package com.example.luntan2.demos.web;
 
+import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,6 +26,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 /**
  * @author <a href="mailto:chenxilzx1@gmail.com">theonefx</a>
  */
+@MapperScan("com.example.luntan2.mapper")
 @Controller
 public class PathVariableController {
 

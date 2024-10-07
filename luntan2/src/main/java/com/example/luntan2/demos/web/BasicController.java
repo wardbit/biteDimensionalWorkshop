@@ -17,27 +17,32 @@
 package com.example.luntan2.demos.web;
 
 import com.example.luntan2.entity.User;
+import com.example.luntan2.mapper.UserMapper;
+import org.mybatis.spring.annotation.MapperScan;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @author <a href="mailto:chenxilzx1@gmail.com">theonefx</a>
  */
+@MapperScan("com.example.luntan2.mapper")
 @Controller
 public class BasicController {
+    @Autowired
+    private UserMapper userMapper;
 
-    // http://127.0.0.1:8080/hello?name=lisi
-    @RequestMapping("/hello")
+
+    // http://127.0.0.1:8080/hello?username=lisi
+    @RequestMapping(value="/hello",method = RequestMethod.POST)
     @ResponseBody
-    public String hello(@RequestParam(name = "name", defaultValue = "unknown user") String name) {
-        return "Hello " + name;
+    public String hello(User user) {
+        System.out.println(user);
+        return "Hello " + user.getUsername();
     }
 
     // http://127.0.0.1:8080/user
-    @RequestMapping("/user")
+    @RequestMapping("/logup")
     @ResponseBody
     public User user() {
         User user = new User();

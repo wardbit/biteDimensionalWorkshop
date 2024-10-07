@@ -16,26 +16,52 @@
 
 package com.example.luntan2.entity;
 
+import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 import org.yaml.snakeyaml.events.Event;
 
 /**
  * @author <a href="mailto:chenxilzx1@gmail.com">theonefx</a>
  */
-@Data
+@TableName("users")
 public class User {
 
     private String username;
     private String bio;
     private String password_hash;
-
+    private String total_points;
     private int user_id;
     private String email;
-    private int phone;
+    private String phone;
     private String avatar_url;
     private String role;
     private String created_at;
     private String last_login;
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "username='" + username + '\'' +
+                ", bio='" + bio + '\'' +
+                ", password_hash='" + password_hash + '\'' +
+                ", total_points='" + total_points + '\'' +
+                ", user_id=" + user_id +
+                ", email='" + email + '\'' +
+                ", phone=" + phone +
+                ", avatar_url='" + avatar_url + '\'' +
+                ", role='" + role + '\'' +
+                ", created_at='" + created_at + '\'' +
+                ", last_login='" + last_login + '\'' +
+                '}';
+    }
+
+    public String getTotal_points() {
+        return total_points;
+    }
+
+    public void setTotal_points(String total_points) {
+        this.total_points = total_points;
+    }
 
     public String getUsername() {
         return username;
@@ -78,11 +104,11 @@ public class User {
         this.email = email;
     }
 
-    public int getPhone() {
+    public String getPhone() {
         return phone;
     }
 
-    public void setPhone(int phone) {
+    public void setPhone(String phone) {
         this.phone = phone;
     }
 
@@ -118,19 +144,4 @@ public class User {
         this.last_login = last_login;
     }
 
-    @Override
-    public String toString() {
-        return "User{" +
-                "username='" + username + '\'' +
-                ", bio='" + bio + '\'' +
-                ", password_hash='" + password_hash + '\'' +
-                ", user_id=" + user_id +
-                ", email='" + email + '\'' +
-                ", phone=" + phone +
-                ", avatar_url='" + avatar_url + '\'' +
-                ", role='" + role + '\'' +
-                ", created_at='" + created_at + '\'' +
-                ", last_login='" + last_login + '\'' +
-                '}';
-    }
 }
