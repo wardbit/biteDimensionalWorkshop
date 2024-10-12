@@ -11,11 +11,27 @@
  Target Server Version : 80039
  File Encoding         : 65001
 
- Date: 25/09/2024 10:18:12
+ Date: 12/10/2024 08:34:43
 */
 
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
+
+-- ----------------------------
+-- Table structure for blacklist
+-- ----------------------------
+DROP TABLE IF EXISTS `blacklist`;
+CREATE TABLE `blacklist`  (
+  `blacklist_id` int(0) NOT NULL AUTO_INCREMENT,
+  `user_id` int(0) NOT NULL,
+  `blocked_user_id` int(0) NOT NULL,
+  `created_at` timestamp(0) NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`blacklist_id`) USING BTREE,
+  UNIQUE INDEX `user_id`(`user_id`, `blocked_user_id`) USING BTREE,
+  INDEX `blocked_user_id`(`blocked_user_id`) USING BTREE,
+  CONSTRAINT `blacklist_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  CONSTRAINT `blacklist_ibfk_2` FOREIGN KEY (`blocked_user_id`) REFERENCES `users` (`user_id`) ON DELETE RESTRICT ON UPDATE RESTRICT
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for categories
@@ -28,37 +44,58 @@ CREATE TABLE `categories`  (
   `created_at` timestamp(0) NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`category_id`) USING BTREE,
   UNIQUE INDEX `name`(`name`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 26 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 47 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of categories
 -- ----------------------------
-INSERT INTO `categories` VALUES (1, 'game', NULL, '2024-09-23 10:09:29');
-INSERT INTO `categories` VALUES (2, 'animation', NULL, '2024-09-23 10:08:01');
-INSERT INTO `categories` VALUES (3, 'comics', NULL, '2024-09-23 10:09:10');
-INSERT INTO `categories` VALUES (4, 'novel', NULL, '2024-09-23 10:09:56');
+INSERT INTO `categories` VALUES (1, '手游', NULL, '2024-09-23 10:09:29');
+INSERT INTO `categories` VALUES (2, '番', NULL, '2024-09-23 10:08:01');
+INSERT INTO `categories` VALUES (3, '漫画', NULL, '2024-09-23 10:09:10');
+INSERT INTO `categories` VALUES (4, '小说', NULL, '2024-09-23 10:09:56');
 INSERT INTO `categories` VALUES (5, 'HTML', NULL, '2024-09-23 10:09:33');
 INSERT INTO `categories` VALUES (6, 'CSS', NULL, '2024-09-23 10:09:12');
 INSERT INTO `categories` VALUES (7, 'C++', NULL, '2024-09-23 10:09:04');
 INSERT INTO `categories` VALUES (8, 'JS', NULL, '2024-09-23 10:09:53');
-INSERT INTO `categories` VALUES (9, 'database', NULL, '2024-09-23 10:09:15');
+INSERT INTO `categories` VALUES (9, '数据库', NULL, '2024-09-23 10:09:15');
 INSERT INTO `categories` VALUES (10, 'java', NULL, '2024-09-23 10:09:50');
-INSERT INTO `categories` VALUES (11, 'webService', NULL, '2024-09-23 10:10:14');
-INSERT INTO `categories` VALUES (12, 'serverSide', NULL, '2024-09-23 10:10:05');
-INSERT INTO `categories` VALUES (13, 'software', NULL, '2024-09-23 10:10:07');
-INSERT INTO `categories` VALUES (14, 'technology', NULL, '2024-09-23 10:10:10');
+INSERT INTO `categories` VALUES (11, '网络服务', NULL, '2024-09-23 10:10:14');
+INSERT INTO `categories` VALUES (12, '服务端', NULL, '2024-09-23 10:10:05');
+INSERT INTO `categories` VALUES (13, '软件开发', NULL, '2024-09-23 10:10:07');
+INSERT INTO `categories` VALUES (14, '技术', NULL, '2024-09-23 10:10:10');
 INSERT INTO `categories` VALUES (15, 'QT', NULL, '2024-09-23 10:10:02');
 INSERT INTO `categories` VALUES (16, 'python', NULL, '2024-09-23 10:09:58');
-INSERT INTO `categories` VALUES (17, 'go', NULL, '2024-09-23 10:09:31');
-INSERT INTO `categories` VALUES (18, '.net', NULL, '2024-09-23 10:07:53');
-INSERT INTO `categories` VALUES (19, 'C#', NULL, '2024-09-23 10:09:01');
-INSERT INTO `categories` VALUES (20, 'cat', NULL, '2024-09-23 10:09:07');
-INSERT INTO `categories` VALUES (21, 'doge', NULL, '2024-09-23 10:09:24');
-INSERT INTO `categories` VALUES (22, 'bigData', NULL, '2024-09-23 10:08:03');
+INSERT INTO `categories` VALUES (17, 'goland', NULL, '2024-09-23 10:09:31');
+INSERT INTO `categories` VALUES (18, 'dotnet', NULL, '2024-09-23 10:07:53');
+INSERT INTO `categories` VALUES (19, 'Csharp', NULL, '2024-09-23 10:09:01');
+INSERT INTO `categories` VALUES (20, '猫', NULL, '2024-09-23 10:09:07');
+INSERT INTO `categories` VALUES (21, '狗', NULL, '2024-09-23 10:09:24');
+INSERT INTO `categories` VALUES (22, '大数据', NULL, '2024-09-23 10:08:03');
 INSERT INTO `categories` VALUES (23, 'AI', NULL, '2024-09-23 10:07:58');
-INSERT INTO `categories` VALUES (24, 'food', NULL, '2024-09-23 10:09:26');
+INSERT INTO `categories` VALUES (24, '食物', NULL, '2024-09-23 10:09:26');
 INSERT INTO `categories` VALUES (25, 'xml', NULL, '2024-09-23 10:10:16');
-INSERT INTO `categories` VALUES (26, 'dog', NULL, '2024-09-23 10:14:01');
+INSERT INTO `categories` VALUES (26, 'rust', NULL, '2024-09-30 09:41:47');
+INSERT INTO `categories` VALUES (27, 'galgame', NULL, '2024-09-30 09:38:27');
+INSERT INTO `categories` VALUES (28, '东方', NULL, '2024-09-30 09:38:41');
+INSERT INTO `categories` VALUES (29, '3A', NULL, '2024-09-30 09:42:18');
+INSERT INTO `categories` VALUES (30, '独立游戏', NULL, '2024-09-30 09:42:27');
+INSERT INTO `categories` VALUES (31, 'FPS', NULL, '2024-09-30 09:42:38');
+INSERT INTO `categories` VALUES (32, '键政', NULL, '2024-09-30 09:43:12');
+INSERT INTO `categories` VALUES (33, '动漫', NULL, '2024-09-30 09:43:19');
+INSERT INTO `categories` VALUES (34, '电影', NULL, '2024-09-30 09:43:34');
+INSERT INTO `categories` VALUES (35, 'Linux', NULL, '2024-09-30 09:44:12');
+INSERT INTO `categories` VALUES (36, 'git', NULL, '2024-09-30 09:44:34');
+INSERT INTO `categories` VALUES (37, 'docker', NULL, '2024-09-30 09:44:56');
+INSERT INTO `categories` VALUES (38, '网络安全', NULL, '2024-09-30 09:48:50');
+INSERT INTO `categories` VALUES (39, '嵌入式', NULL, '2024-09-30 09:49:03');
+INSERT INTO `categories` VALUES (40, '音视频编码', NULL, '2024-09-30 09:49:39');
+INSERT INTO `categories` VALUES (41, '软件分享', NULL, '2024-09-30 09:49:59');
+INSERT INTO `categories` VALUES (42, '计算机网络', NULL, '2024-09-30 09:51:12');
+INSERT INTO `categories` VALUES (43, '图形学', NULL, '2024-09-30 09:51:23');
+INSERT INTO `categories` VALUES (44, '原神', NULL, '2024-10-07 19:24:41');
+INSERT INTO `categories` VALUES (45, '王者荣耀', NULL, '2024-10-07 19:24:58');
+INSERT INTO `categories` VALUES (46, '崩坏·星穹铁道', NULL, '2024-10-07 19:25:27');
+INSERT INTO `categories` VALUES (47, '明日方舟', NULL, '2024-10-07 19:25:57');
 
 -- ----------------------------
 -- Table structure for comments
@@ -91,6 +128,38 @@ CREATE TABLE `favorites`  (
   INDEX `post_id`(`post_id`) USING BTREE,
   CONSTRAINT `favorites_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `favorites_ibfk_2` FOREIGN KEY (`post_id`) REFERENCES `posts` (`post_id`) ON DELETE RESTRICT ON UPDATE RESTRICT
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Table structure for follows
+-- ----------------------------
+DROP TABLE IF EXISTS `follows`;
+CREATE TABLE `follows`  (
+  `follow_id` int(0) NOT NULL AUTO_INCREMENT,
+  `follower_id` int(0) NOT NULL,
+  `following_id` int(0) NOT NULL,
+  `created_at` timestamp(0) NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`follow_id`) USING BTREE,
+  UNIQUE INDEX `follower_id`(`follower_id`, `following_id`) USING BTREE,
+  INDEX `following_id`(`following_id`) USING BTREE,
+  CONSTRAINT `follows_ibfk_1` FOREIGN KEY (`follower_id`) REFERENCES `users` (`user_id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  CONSTRAINT `follows_ibfk_2` FOREIGN KEY (`following_id`) REFERENCES `users` (`user_id`) ON DELETE RESTRICT ON UPDATE RESTRICT
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Table structure for friends
+-- ----------------------------
+DROP TABLE IF EXISTS `friends`;
+CREATE TABLE `friends`  (
+  `friend_id` int(0) NOT NULL AUTO_INCREMENT,
+  `user1_id` int(0) NOT NULL,
+  `user2_id` int(0) NOT NULL,
+  `created_at` timestamp(0) NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`friend_id`) USING BTREE,
+  UNIQUE INDEX `user1_id`(`user1_id`, `user2_id`) USING BTREE,
+  INDEX `user2_id`(`user2_id`) USING BTREE,
+  CONSTRAINT `friends_ibfk_1` FOREIGN KEY (`user1_id`) REFERENCES `users` (`user_id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  CONSTRAINT `friends_ibfk_2` FOREIGN KEY (`user2_id`) REFERENCES `users` (`user_id`) ON DELETE RESTRICT ON UPDATE RESTRICT
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
@@ -203,32 +272,27 @@ CREATE TABLE `tags`  (
 -- ----------------------------
 -- Records of tags
 -- ----------------------------
-INSERT INTO `tags` VALUES (18, '.net');
-INSERT INTO `tags` VALUES (23, 'AI');
-INSERT INTO `tags` VALUES (2, 'animation');
-INSERT INTO `tags` VALUES (22, 'bigData');
-INSERT INTO `tags` VALUES (19, 'C#');
-INSERT INTO `tags` VALUES (7, 'C++');
-INSERT INTO `tags` VALUES (20, 'cat');
-INSERT INTO `tags` VALUES (3, 'comics');
-INSERT INTO `tags` VALUES (6, 'CSS');
-INSERT INTO `tags` VALUES (9, 'database');
-INSERT INTO `tags` VALUES (26, 'dog');
-INSERT INTO `tags` VALUES (21, 'doge');
-INSERT INTO `tags` VALUES (24, 'food');
-INSERT INTO `tags` VALUES (1, 'game');
-INSERT INTO `tags` VALUES (17, 'go');
-INSERT INTO `tags` VALUES (5, 'HTML');
-INSERT INTO `tags` VALUES (10, 'java');
-INSERT INTO `tags` VALUES (8, 'JS');
-INSERT INTO `tags` VALUES (4, 'novel');
-INSERT INTO `tags` VALUES (16, 'python');
-INSERT INTO `tags` VALUES (15, 'QT');
-INSERT INTO `tags` VALUES (12, 'serverSide');
-INSERT INTO `tags` VALUES (13, 'software');
-INSERT INTO `tags` VALUES (14, 'technology');
-INSERT INTO `tags` VALUES (11, 'webService');
-INSERT INTO `tags` VALUES (25, 'xml');
+INSERT INTO `tags` VALUES (3, '心得分享');
+INSERT INTO `tags` VALUES (4, '技术文章');
+INSERT INTO `tags` VALUES (1, '求助');
+INSERT INTO `tags` VALUES (2, '资源分享');
+
+-- ----------------------------
+-- Table structure for user_drive
+-- ----------------------------
+DROP TABLE IF EXISTS `user_drive`;
+CREATE TABLE `user_drive`  (
+  `file_id` int(0) NOT NULL AUTO_INCREMENT,
+  `user_id` int(0) NOT NULL,
+  `folder_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `file_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `file_path` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `file_size` bigint(0) NULL DEFAULT NULL,
+  `uploaded_at` timestamp(0) NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`file_id`) USING BTREE,
+  INDEX `user_id`(`user_id`) USING BTREE,
+  CONSTRAINT `user_drive_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE RESTRICT ON UPDATE RESTRICT
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for users
@@ -239,20 +303,25 @@ CREATE TABLE `users`  (
   `username` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `email` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
   `password_hash` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `bio` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL,
+  `bio` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
   `avatar_url` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
   `role` enum('admin','moderator','user') CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT 'user',
   `created_at` timestamp(0) NULL DEFAULT CURRENT_TIMESTAMP,
   `last_login` timestamp(0) NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP(0),
   `total_points` int(0) NULL DEFAULT 0,
+  `phone` int(0) NULL DEFAULT NULL,
+  `nickname` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
   PRIMARY KEY (`user_id`) USING BTREE,
   UNIQUE INDEX `username`(`username`) USING BTREE,
-  UNIQUE INDEX `email`(`email`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+  UNIQUE INDEX `email`(`email`) USING BTREE,
+  UNIQUE INDEX `phone`(`phone`) USING BTREE,
+  UNIQUE INDEX `nickname`(`nickname`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of users
 -- ----------------------------
-INSERT INTO `users` VALUES (1, 'admin', NULL, '123456', NULL, NULL, 'admin', '2024-09-22 15:49:06', '2024-09-22 15:49:12', 0);
+INSERT INTO `users` VALUES (0, 'admin', NULL, '123456', NULL, 'C:\\Users\\ward\\AppData\\Local\\Temp\\tomcat-docbase.8080.3510817839579433821\\upload\\Snipaste_2024-06-22_23-15-48.png', 'admin', '2024-09-22 15:49:06', '2024-10-06 20:31:08', 0, NULL, NULL);
+INSERT INTO `users` VALUES (2, 'cat', NULL, '123', NULL, NULL, 'user', '2024-10-07 18:17:19', '2024-10-07 18:17:19', 0, NULL, NULL);
 
 SET FOREIGN_KEY_CHECKS = 1;

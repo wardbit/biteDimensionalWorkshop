@@ -17,7 +17,8 @@ CREATE TABLE users (
     role ENUM('admin', 'moderator', 'user') DEFAULT 'user',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     last_login TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-    phone INT unique
+    phone INT unique,
+    nickname varchar(255) unique
 );
 ```
 
@@ -172,6 +173,82 @@ CREATE TABLE points (
 - `points`: 积分的数值，正数表示增加积分，负数表示扣除积分。
 - `action_type`: 描述该积分记录的来源，例如“发帖”、“评论”、“资源下载”等。
 - `created_at`: 积分变动的时间戳。
+
+
+
+### 新增表
+
+#### 1. 关注表 (`follows`)
+
+用于存储用户之间的关注关系。
+
+```sql
+CREATE TABLE follows (
+    follow_id INT AUTO_INCREMENT PRIMARY KEY,
+    follower_id INT NOT NULL,
+    following_id INT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (follower_id) REFERENCES users(user_id),
+    FOREIGN KEY (following_id) REFERENCES users(user_id),
+    UNIQUE (follower_id, following_id)
+);
+```
+
+#### 2. 好友表 (`friends`)
+
+用于存储用户之间的好友关系（双向确认）。
+
+```sql
+CREATE TABLE friends (
+    friend_id INT AUTO_INCREMENT PRIMARY KEY,
+    user1_id INT NOT NULL,
+    user2_id INT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user1_id) REFERENCES users(user_id),
+    FOREIGN KEY (user2_id) REFERENCES users(user_id),
+    CHECK (user1_id < user2_id),
+    UNIQUE (user1_id, user2_id)
+);
+```
+
+> 注：为了避免存储重复关系，`user1_id` 总是比 `user2_id` 小。
+
+#### 3. 用户网盘表 (`user_drive`)
+
+用于存储用户上传的文件信息。
+
+```sql
+CREATE TABLE user_drive (
+    file_id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    folder_name VARCHAR(255),
+    file_name VARCHAR(255) NOT NULL,
+    file_path VARCHAR(500) NOT NULL,
+    file_size BIGINT,
+    uploaded_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(user_id)
+);
+```
+
+> 注：`folder_name` 用于标识文件夹，`file_path` 存储文件在服务器上的路径。
+
+#### 4. 拉黑表 (`blacklist`)
+
+用于存储用户之间的拉黑关系。
+
+```sql
+CREATE TABLE blacklist (
+    blacklist_id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    blocked_user_id INT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(user_id),
+    FOREIGN KEY (blocked_user_id) REFERENCES users(user_id),
+    UNIQUE (user_id, blocked_user_id)
+);
+```
+
+> 注：`blacklist` 表用于记录用户拉黑其他用户的关系，防止相互骚扰。
 
 
 
@@ -391,65 +468,4 @@ CREATE TABLE points (
 
 通过这些关系表设计，数据库结构已经完善，支持用户发帖、评论、收藏帖子、积分管理、标签管理等多项功能，同时保证了系统的可扩展性和高效性。
 
-### 新增表
-
-#### 1. 关注表 (`follows`)
-用于存储用户之间的关注关系。
-```sql
-CREATE TABLE follows (
-    follow_id INT AUTO_INCREMENT PRIMARY KEY,
-    follower_id INT NOT NULL,
-    following_id INT NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (follower_id) REFERENCES users(user_id),
-    FOREIGN KEY (following_id) REFERENCES users(user_id),
-    UNIQUE (follower_id, following_id)
-);
-```
-
-#### 2. 好友表 (`friends`)
-用于存储用户之间的好友关系（双向确认）。
-```sql
-CREATE TABLE friends (
-    friend_id INT AUTO_INCREMENT PRIMARY KEY,
-    user1_id INT NOT NULL,
-    user2_id INT NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (user1_id) REFERENCES users(user_id),
-    FOREIGN KEY (user2_id) REFERENCES users(user_id),
-    CHECK (user1_id < user2_id),
-    UNIQUE (user1_id, user2_id)
-);
-```
-> 注：为了避免存储重复关系，`user1_id` 总是比 `user2_id` 小。
-
-#### 3. 用户网盘表 (`user_drive`)
-用于存储用户上传的文件信息。
-```sql
-CREATE TABLE user_drive (
-    file_id INT AUTO_INCREMENT PRIMARY KEY,
-    user_id INT NOT NULL,
-    folder_name VARCHAR(255),
-    file_name VARCHAR(255) NOT NULL,
-    file_path VARCHAR(500) NOT NULL,
-    file_size BIGINT,
-    uploaded_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES users(user_id)
-);
-```
-> 注：`folder_name` 用于标识文件夹，`file_path` 存储文件在服务器上的路径。
-
-#### 4. 拉黑表 (`blacklist`)
-用于存储用户之间的拉黑关系。
-```sql
-CREATE TABLE blacklist (
-    blacklist_id INT AUTO_INCREMENT PRIMARY KEY,
-    user_id INT NOT NULL,
-    blocked_user_id INT NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES users(user_id),
-    FOREIGN KEY (blocked_user_id) REFERENCES users(user_id),
-    UNIQUE (user_id, blocked_user_id)
-);
-```
-> 注：`blacklist` 表用于记录用户拉黑其他用户的关系，防止相互骚扰。
+> 
