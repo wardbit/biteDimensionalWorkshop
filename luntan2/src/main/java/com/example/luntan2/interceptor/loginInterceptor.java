@@ -3,7 +3,8 @@ package com.example.luntan2.interceptor;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.example.luntan2.entity.User;
 import com.example.luntan2.mapper.UserMapper;
-import io.swagger.annotations.Api;
+//import io.swagger.annotations.Api;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
@@ -13,7 +14,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 @MapperScan("com.example.luntan2.mapper")
-@Api("注册拦截器")
+@Tag(name="注册拦截器")
 @RestController
 public class loginInterceptor implements HandlerInterceptor {
     @Autowired

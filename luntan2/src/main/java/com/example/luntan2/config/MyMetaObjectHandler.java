@@ -1,12 +1,13 @@
 package com.example.luntan2.config;
 
 import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
-import io.swagger.annotations.Api;
+//import io.swagger.annotations.Api;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.apache.ibatis.reflection.MetaObject;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
-@Api("自动填充器")
+@Tag(name="自动填充器")
 @Component
 public class MyMetaObjectHandler implements MetaObjectHandler {
 

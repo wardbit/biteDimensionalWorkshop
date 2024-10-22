@@ -2,8 +2,10 @@ package com.example.luntan2.controllor;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.example.luntan2.entity.User;
 import com.example.luntan2.mapper.UserMapper;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+//import io.swagger.annotations.Api;
+//import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -17,16 +19,16 @@ import java.io.IOException;
 
 @MapperScan("com.example.luntan2.mapper")
 @RestController
-@Api("文件上传接口")
+@Tag(name="文件上传接口")
 public class FileUploadController {
 
     @Autowired
     private UserMapper userMapper;
     // 更新用户的头像URL
-    @ApiOperation("更新用户的头像URL")
+    @Operation(summary = "上传用户的头像URL")
     @PutMapping("/upload")
-    public String up(String username, MultipartFile photo, HttpServletRequest request) throws IOException {
-        System.out.println(username);
+    public String up(String userId, MultipartFile photo, HttpServletRequest request) throws IOException {
+        System.out.println(userId);
         // 获取图片的原始名称
         System.out.println(photo.getOriginalFilename());
         // 取文件类型
@@ -37,7 +39,7 @@ public class FileUploadController {
         saveFile(photo, path);
 
         // 更新用户的头像URL
-        updateUserAvatarUrl(username, path + photo.getOriginalFilename());
+        updateUserAvatarUrl(userId, path + photo.getOriginalFilename());
 
         return "上传成功";
     }
@@ -45,9 +47,10 @@ public class FileUploadController {
 
     // 更新用户的头像URL
  //更新用户的头像URL
-    public void updateUserAvatarUrl(String username, String avatarUrl) {
+    @Operation(summary = "保存用户的头像URL")
+    public void updateUserAvatarUrl(String userId, String avatarUrl) {
         UpdateWrapper<User> updateWrapper = new UpdateWrapper<>();
-        updateWrapper.eq("username", username); // 根据用户名查找
+        updateWrapper.eq("username", userId); // 根据用户名查找
 
         User user = new User();
         user.setAvatarUrl(avatarUrl); // 设置要更新的字段

@@ -3,6 +3,7 @@ package com.example.luntan2.entity;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -21,21 +22,9 @@ public class posts {
     private int views;
     @TableField(value="created_at")
     private LocalDateTime createdAt;
-    @TableField(exist = false)
-    private long favoritesCount;
-    @TableField(exist = false)
-    private int commentCount ;
-    @TableField(exist = false)
-    private List<comments> commentsList;
-    // 标签
-    @TableField(exist = false)
-    private String name;
-    @TableField(exist = false)
-    private int tagId;
-    @TableField(exist = false)
-    private int likeCount;
-    @TableField(exist = false)
-    private String categoryName;
+    @TableField(value="thumbnail_image")
+    @Schema(description ="封面")
+    private String thumbnailImage;
 
 
 

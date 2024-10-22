@@ -11,8 +11,8 @@ public class comments {
     private String commentId;
     @TableField(value = "post_id")
     private int postId;
-    @TableField(value = "userId")
-    private int user_id;
+    @TableField(value = "user_id")
+    private int userId;
     private String content;
 
 

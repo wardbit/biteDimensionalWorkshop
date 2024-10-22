@@ -20,7 +20,8 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.example.luntan2.entity.User;
 import com.example.luntan2.mapper.UserMapper;
-import io.swagger.annotations.ApiOperation;
+//import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
 import javafx.scene.canvas.GraphicsContext;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,7 +49,7 @@ public class BasicController {
     // http://127.0.0.1:8080/logup注册
     @RequestMapping(value = "/logup/{username}/{passwordHash}",method = RequestMethod.PUT)
     @ResponseBody
-    @ApiOperation("注册")
+    @Operation(summary = "注册")
     public User logup(@PathVariable String username,@PathVariable String passwordHash) {
         UpdateWrapper<User> updateWrapper = new UpdateWrapper<>();
 
@@ -88,7 +89,7 @@ return user;}
     // http://127.0.0.1:8080/save_user?name=newName&age=11
     @RequestMapping("/setin/{username}/{passwordHash}")
     @ResponseBody
-    @ApiOperation("登录")
+    @Operation(summary = "登录")
     public boolean setin(@PathVariable String username,@PathVariable String passwordHash) {
 
         UpdateWrapper<User> updateWrapper = new UpdateWrapper<>();

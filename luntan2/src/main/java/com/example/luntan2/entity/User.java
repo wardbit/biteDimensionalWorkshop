@@ -83,43 +83,7 @@ public class User {
      * 昵称
      */
     private String nickname;
-    // 个人帖子列表
-    @TableField(exist = false)
-    private List<posts> postsList;
-    //发表评论
-    @TableField(exist = false)
-    private List<comments> commentsList;
-    //点赞
-    @TableField(exist = false)
-    private List<likes> likesList;
-    @TableField(exist = false)
-    private List<user_drive> user_driveList; ;
-    @TableField(exist = false)
-    private List<favorites> favoritesList; ;
-    //你的关注列表
-    @TableField(exist = false)
-    private List<follows> followerList;
-    @TableField(exist = false)
-    //你的被关注列表
-    private List<follows> followingList;; ;
-    @TableField(exist = false)
-    private List<points> pointsList; ;
-    @TableField(exist = false)
-    private List<messages> messagesList; ;
-    //黑名单列表
-    @TableField(exist = false)
-    private List<blacklist> blacklistList; ;
-    @TableField(exist = false)
-    private List<friends> friendsList;
-    //被黑名单列表;
-    @TableField(exist = false)
-    private List<blacklist> blockedList;
-    @TableField(exist = false)
-    private int friendsCount;
-    @TableField(exist = false)
-    private int followersCount;
-    @TableField(exist = false)
-    private int followingCount;
+
 
 
 

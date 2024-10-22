@@ -36,6 +36,7 @@ CREATE TABLE posts (
     views INT DEFAULT 0,
     FOREIGN KEY (user_id) REFERENCES users(user_id),
     FOREIGN KEY (category_id) REFERENCES categories(category_id)
+    thumbnail_image VARCHAR(255) DEFAULT NULL,  -- 新增的封面图片
 );
 ```
 
@@ -96,6 +97,7 @@ CREATE TABLE messages (
     sent_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (sender_id) REFERENCES users(user_id),
     FOREIGN KEY (receiver_id) REFERENCES users(user_id)
+    image VARCHAR(255) DEFAULT NULL,  -- 新增的单张图片
 );
 ```
 
@@ -174,11 +176,7 @@ CREATE TABLE points (
 - `action_type`: 描述该积分记录的来源，例如“发帖”、“评论”、“资源下载”等。
 - `created_at`: 积分变动的时间戳。
 
-
-
-### 新增表
-
-#### 1. 关注表 (`follows`)
+#### 12. 关注表 (`follows`)
 
 用于存储用户之间的关注关系。
 
@@ -194,7 +192,7 @@ CREATE TABLE follows (
 );
 ```
 
-#### 2. 好友表 (`friends`)
+#### 13. 好友表 (`friends`)
 
 用于存储用户之间的好友关系（双向确认）。
 
@@ -213,7 +211,7 @@ CREATE TABLE friends (
 
 > 注：为了避免存储重复关系，`user1_id` 总是比 `user2_id` 小。
 
-#### 3. 用户网盘表 (`user_drive`)
+#### 14. 用户网盘表 (`user_drive`)
 
 用于存储用户上传的文件信息。
 
@@ -232,7 +230,7 @@ CREATE TABLE user_drive (
 
 > 注：`folder_name` 用于标识文件夹，`file_path` 存储文件在服务器上的路径。
 
-#### 4. 拉黑表 (`blacklist`)
+#### 15. 拉黑表 (`blacklist`)
 
 用于存储用户之间的拉黑关系。
 
@@ -250,7 +248,26 @@ CREATE TABLE blacklist (
 
 > 注：`blacklist` 表用于记录用户拉黑其他用户的关系，防止相互骚扰。
 
+#### 16. 图片表
 
+新增一个通用的图片表来存储图片信息，每个图片将与特定的帖子或评论关联：
+
+```sql
+CREATE TABLE images (
+    image_id INT AUTO_INCREMENT PRIMARY KEY,
+    post_id INT,
+    comment_id INT,
+    image_url VARCHAR(255) NOT NULL,
+    uploaded_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (post_id) REFERENCES posts(post_id) ON DELETE CASCADE,
+    FOREIGN KEY (comment_id) REFERENCES comments(comment_id) ON DELETE CASCADE
+);
+```
+
+- `post_id`：与帖子关联的外键，可以为空。
+- `comment_id`：与评论关联的外键，可以为空。
+- `image_url`：存储图片的 URL（可以是存储路径或 CDN 链接）。
+- `ON DELETE CASCADE`：当帖子或评论被删除时，关联的图片也会被删除。
 
 ### 数据库设计说明：
 
