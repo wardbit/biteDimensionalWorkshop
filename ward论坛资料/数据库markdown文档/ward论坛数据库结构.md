@@ -34,9 +34,10 @@ CREATE TABLE posts (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     views INT DEFAULT 0,
+    thumbnail_image VARCHAR(255) DEFAULT NULL,  -- 新增的封面图片
     FOREIGN KEY (user_id) REFERENCES users(user_id),
     FOREIGN KEY (category_id) REFERENCES categories(category_id)
-    thumbnail_image VARCHAR(255) DEFAULT NULL,  -- 新增的封面图片
+    
 );
 ```
 
@@ -250,18 +251,25 @@ CREATE TABLE blacklist (
 
 #### 16. 图片表
 
-新增一个通用的图片表来存储图片信息，每个图片将与特定的帖子或评论关联：
+新增两个通用的图片表来存储图片信息，每个图片将与特定的帖子或评论关联：
 
 ```sql
-CREATE TABLE images (
+CREATE TABLE post_images (
     image_id INT AUTO_INCREMENT PRIMARY KEY,
-    post_id INT,
-    comment_id INT,
+    post_id INT NOT NULL,
     image_url VARCHAR(255) NOT NULL,
     uploaded_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (post_id) REFERENCES posts(post_id) ON DELETE CASCADE,
+    FOREIGN KEY (post_id) REFERENCES posts(post_id) ON DELETE CASCADE
+);
+
+CREATE TABLE comment_images (
+    image_id INT AUTO_INCREMENT PRIMARY KEY,
+    comment_id INT NOT NULL,
+    image_url VARCHAR(255) NOT NULL,
+    uploaded_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (comment_id) REFERENCES comments(comment_id) ON DELETE CASCADE
 );
+
 ```
 
 - `post_id`：与帖子关联的外键，可以为空。
@@ -485,4 +493,4 @@ CREATE TABLE images (
 
 通过这些关系表设计，数据库结构已经完善，支持用户发帖、评论、收藏帖子、积分管理、标签管理等多项功能，同时保证了系统的可扩展性和高效性。
 
-> 
+> 1

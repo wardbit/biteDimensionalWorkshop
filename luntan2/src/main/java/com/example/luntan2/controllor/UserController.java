@@ -55,6 +55,7 @@ public class UserController {
 
         UpdateWrapper<User> deleteWrapper = new UpdateWrapper<>();
         deleteWrapper.eq("userId", userId);
+        //有文件的键值删除时记得先删除文件
         String avatarUrl = userMapper.selectById(userId).getAvatarUrl();
         if (avatarUrl!= null) {
             File file = new File(avatarUrl);
@@ -73,11 +74,9 @@ public class UserController {
     }
     @Operation(summary = "查询用户(用户名)")
     @GetMapping("admin/user/username/{username}")
-//    @GetMapping("admin/user/{username}")
     public User queryUserByUsername(@PathVariable String username){
         QueryWrapper<User> updateWrapper = new QueryWrapper<>();
-        User user=new User();
-        user=userMapper.selectOne(updateWrapper.eq("username", username));
+        User user=userMapper.selectOne(updateWrapper.eq("username", username));
         return user;
     }
     @Operation(summary = "查询用户全部贴子（分页）")

@@ -2,8 +2,6 @@ package com.example.luntan2.controllor;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.example.luntan2.entity.User;
 import com.example.luntan2.mapper.UserMapper;
-//import io.swagger.annotations.Api;
-//import io.swagger.annotations.ApiOperation;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.mybatis.spring.annotation.MapperScan;
@@ -60,6 +58,7 @@ public class FileUploadController {
 
 
     // 保存文件的方法
+    @Operation(summary = "保存文件")
     public void saveFile(MultipartFile photo, String path) throws IOException {
         // 判断存储的目录是否存在，如果不存在则创建
         File dir = new File(path);

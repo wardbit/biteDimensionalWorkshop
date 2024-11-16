@@ -11,8 +11,8 @@ import java.util.List;
 
 @Data
 public class categories {
-    @TableId(type= IdType.AUTO,value="categories_id")
-    private int categoriesId;
+    @TableId(type= IdType.AUTO,value="category_id")
+    private int categoryId;
     private String name;
     private String description;
     @TableField(value="created_at")

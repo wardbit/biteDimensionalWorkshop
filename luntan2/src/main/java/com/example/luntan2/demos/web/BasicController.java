@@ -19,7 +19,8 @@ package com.example.luntan2.demos.web;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.example.luntan2.entity.User;
-import com.example.luntan2.mapper.UserMapper;
+import com.example.luntan2.entity.points;
+import com.example.luntan2.mapper.*;
 //import io.swagger.annotations.ApiOperation;
 import io.swagger.v3.oas.annotations.Operation;
 import javafx.scene.canvas.GraphicsContext;
@@ -36,6 +37,8 @@ import org.springframework.web.bind.annotation.*;
 public class BasicController {
     @Autowired
     private UserMapper userMapper;
+    @Autowired
+    private pointsMapper pointsMapper;
 
 
     // http://127.0.0.1:8080/hello?username=lisi
@@ -52,8 +55,9 @@ public class BasicController {
     @Operation(summary = "注册")
     public User logup(@PathVariable String username,@PathVariable String passwordHash) {
         UpdateWrapper<User> updateWrapper = new UpdateWrapper<>();
-
+//        UpdateWrapper<points> pointsUpdateWrapper = new UpdateWrapper<>();
        User user = new User();
+       points points = new points();
         String regex = "^[a-zA-Z]\\w{4,15}$";//账号的正则表达式,账户允许的字符为字母、数字、下划线，长度为5-16个字符
        String regex2 = "\t(?=^.{8,}$)(?=.*\\d)(?=.*\\W+)(?=.*[A-Z])(?=.*[a-z])(?!.*\\n).*$";//密码由数字/大写字母/小写字母/标点符号组成，四种都必有，8位以上
         User user1=userMapper.selectOne(updateWrapper.eq("username", username));
@@ -67,7 +71,10 @@ public class BasicController {
                 System.out.println("Password is valid.");
              user.setPasswordHash(passwordHash);
                userMapper.insert(user);
-                userMapper.insert(user);
+               points.setUserId(user.getUserId());
+               points.setPoints(0);
+               points.setActionType("a");
+               pointsMapper.insert(points);
             } else {
                 System.out.println("Password is not valid.");
                 System.out.println("密码由数字/大写字母/小写字母/标点符号组成，四种都必有，8位以上");}}
